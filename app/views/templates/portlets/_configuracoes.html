@@ -1,0 +1,7 @@
+<div class="portlet-corpo">
+  <ul class="portlet-links">
+    {% for link in dados.links %}
+      <li><a href="{{ link.url }}">{{ link.rotulo }}</a></li>
+    {% endfor %}
+  </ul>
+</div>

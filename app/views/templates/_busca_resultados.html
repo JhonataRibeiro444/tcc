@@ -1,0 +1,25 @@
+{% if curto %}
+  {# Abaixo de dois caracteres o painel fica fechado. #}
+{% elif clientes or contatos %}
+  {% if clientes %}
+    <div class="busca-grupo">Clientes</div>
+    {% for cliente in clientes %}
+      <a class="busca-item" href="{{ url_for('clientes.detalhar', cliente_id=cliente.id) }}">
+        {{ cliente.nome }}
+        <small>{{ cliente.tipo_pessoa_label }} &middot; {{ cliente.documento_formatado }}</small>
+      </a>
+    {% endfor %}
+  {% endif %}
+
+  {% if contatos %}
+    <div class="busca-grupo">Contatos</div>
+    {% for contato in contatos %}
+      <a class="busca-item" href="{{ url_for('clientes.detalhar', cliente_id=contato.cliente_id) }}">
+        {{ contato.nome }}
+        <small>{{ contato.cliente.nome }}{% if contato.cargo %} &middot; {{ contato.cargo }}{% endif %}</small>
+      </a>
+    {% endfor %}
+  {% endif %}
+{% else %}
+  <div class="busca-vazio">Nada encontrado para "{{ termo }}".</div>
+{% endif %}

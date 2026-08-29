@@ -1,0 +1,35 @@
+<div class="portlet-corpo">
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="text-muted text-uppercase small mb-2">Clientes</div>
+      {% if dados.clientes %}
+        <ul class="portlet-links">
+          {% for cliente in dados.clientes %}
+          <li>
+            <a href="{{ url_for('clientes.detalhar', cliente_id=cliente.id) }}">{{ cliente.nome }}</a>
+            <div class="text-muted small">{{ cliente.documento_formatado }}</div>
+          </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-muted mb-0">Nenhum cliente cadastrado ainda.</p>
+      {% endif %}
+    </div>
+
+    <div class="col-md-6">
+      <div class="text-muted text-uppercase small mb-2">Contatos</div>
+      {% if dados.contatos %}
+        <ul class="portlet-links">
+          {% for contato in dados.contatos %}
+          <li>
+            <a href="{{ url_for('clientes.detalhar', cliente_id=contato.cliente_id) }}">{{ contato.nome }}</a>
+            <div class="text-muted small">{{ contato.cliente.nome }}</div>
+          </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-muted mb-0">Nenhum contato cadastrado ainda.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>

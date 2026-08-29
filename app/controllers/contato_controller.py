@@ -1,4 +1,12 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import (
+    Blueprint,
+    current_app,
+    flash,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 from flask_login import login_required
 
 from app import db
@@ -45,6 +53,45 @@ def _aplicar_form_no_contato(form, contato):
     contato.telefone = apenas_digitos(form.telefone.data) or None
     contato.observacoes = (form.observacoes.data or "").strip() or None
     contato.principal = form.principal.data
+
+
+@contato_bp.route("/contatos")
+@login_required
+def listar():
+    """Listagem geral de contatos, com busca por nome, e-mail ou cliente."""
+    busca = (request.args.get("busca") or "").strip()
+    pagina = request.args.get("pagina", 1, type=int)
+
+    consulta = Contato.query.join(Cliente)
+
+    if busca:
+        termo = f"%{busca}%"
+        consulta = consulta.filter(
+            db.or_(
+                Contato.nome.ilike(termo),
+                Contato.email.ilike(termo),
+                Contato.cargo.ilike(termo),
+                Cliente.nome.ilike(termo),
+            )
+        )
+
+    paginacao = consulta.order_by(Contato.nome).paginate(
+        page=pagina,
+        per_page=current_app.config["ITENS_POR_PAGINA"],
+        error_out=False,
+    )
+
+    contexto = {
+        "paginacao": paginacao,
+        "contatos": paginacao.items,
+        "busca": busca,
+        "titulo": "Contatos",
+    }
+
+    if _e_requisicao_htmx():
+        return render_template("contatos/_tabela.html", **contexto)
+
+    return render_template("contatos/lista.html", **contexto)
 
 
 @contato_bp.route("/clientes/<int:cliente_id>/contatos/novo")

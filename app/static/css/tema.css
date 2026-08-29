@@ -1,0 +1,476 @@
+/* ===================================================================
+   Tema do CRM - camada aplicada sobre o Bootstrap 5.
+
+   A referencia visual sao os sistemas de gestao empresarial (o Oracle
+   NetSuite serviu de inspiracao para a estrutura de barras e portlets).
+   O que caracteriza esse tipo de interface nao e a cor, e a DENSIDADE:
+   fonte menor, espacamentos justos, cantos pouco arredondados e muita
+   informacao visivel sem rolagem.
+
+   Todas as cores e medidas ficam concentradas nas variaveis abaixo,
+   entao trocar a identidade visual do sistema e alterar um bloco so.
+   =================================================================== */
+
+:root {
+    /* Cores da marca */
+    --cor-nav: #2e5f73;
+    --cor-nav-hover: #3d7288;
+    --cor-nav-ativa: #1f4757;
+    --cor-marca: #21495a;
+
+    /* Superficies */
+    --cor-fundo: #eceff2;
+    --cor-superficie: #ffffff;
+    --cor-cabecalho: #f4f6f8;
+    --cor-borda: #d3d9de;
+    --cor-borda-suave: #e4e8ec;
+
+    /* Texto */
+    --cor-texto: #1f2933;
+    --cor-texto-suave: #67727e;
+    --cor-link: #1a5f7a;
+
+    /* Estados */
+    --cor-ok: #1e7d53;
+    --cor-alerta: #9a6a10;
+    --cor-erro: #b3261e;
+
+    /* Densidade */
+    --raio: 3px;
+    --altura-topo: 46px;
+    --espaco: .5rem;
+}
+
+/* ------------------------------------------------------------ base */
+
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    font-size: 13px;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+a {
+    color: var(--cor-link);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ------------------------------------------- faixa superior clara */
+
+.topo {
+    background: var(--cor-superficie);
+    border-bottom: 1px solid var(--cor-borda);
+    height: var(--altura-topo);
+}
+
+.topo-conteudo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 100%;
+    padding: 0 1rem;
+}
+
+.topo-marca {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    color: var(--cor-marca);
+    white-space: nowrap;
+}
+
+.topo-marca:hover {
+    text-decoration: none;
+}
+
+.topo-marca span {
+    font-weight: 400;
+    font-size: .72rem;
+    letter-spacing: .12em;
+    color: var(--cor-texto-suave);
+    text-transform: uppercase;
+}
+
+/* Busca global -------------------------------------------------- */
+
+.topo-busca {
+    position: relative;
+    flex: 1 1 auto;
+    max-width: 520px;
+}
+
+.topo-busca input {
+    width: 100%;
+    height: 28px;
+    padding: 0 .6rem;
+    font-size: 13px;
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    background: #fbfcfd;
+}
+
+.topo-busca input:focus {
+    outline: none;
+    border-color: var(--cor-nav);
+    box-shadow: 0 0 0 2px rgba(46, 95, 115, .15);
+}
+
+.busca-resultados {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    box-shadow: 0 6px 18px rgba(31, 41, 51, .16);
+    max-height: 380px;
+    overflow-y: auto;
+}
+
+.busca-resultados:empty {
+    display: none;
+}
+
+.busca-grupo {
+    padding: .3rem .6rem;
+    font-size: .68rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--cor-texto-suave);
+    background: var(--cor-cabecalho);
+    border-bottom: 1px solid var(--cor-borda-suave);
+}
+
+.busca-item {
+    display: block;
+    padding: .4rem .6rem;
+    border-bottom: 1px solid var(--cor-borda-suave);
+    color: var(--cor-texto);
+}
+
+.busca-item:hover {
+    background: #f0f5f8;
+    text-decoration: none;
+}
+
+.busca-item small {
+    display: block;
+    color: var(--cor-texto-suave);
+}
+
+.busca-vazio {
+    padding: .6rem;
+    color: var(--cor-texto-suave);
+}
+
+/* Identificacao do usuario -------------------------------------- */
+
+.topo-usuario {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+.topo-usuario .usuario-dados {
+    text-align: right;
+    line-height: 1.25;
+}
+
+.topo-usuario .usuario-nome {
+    font-weight: 600;
+}
+
+/* O papel do usuario ainda nao existe no modelo. Este espaco fica
+   reservado para quando os perfis de acesso forem implementados. */
+.topo-usuario .usuario-papel {
+    font-size: .72rem;
+    color: var(--cor-texto-suave);
+}
+
+/* ------------------------------------------ faixa escura de modulos */
+
+.barra-modulos {
+    background: var(--cor-nav);
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .18);
+}
+
+.barra-modulos ul {
+    display: flex;
+    align-items: stretch;
+    margin: 0;
+    padding: 0 .5rem;
+    list-style: none;
+    overflow-x: auto;
+}
+
+.barra-modulos a,
+.barra-modulos .modulo-inativo {
+    display: flex;
+    align-items: center;
+    height: 34px;
+    padding: 0 .85rem;
+    color: #eaf1f4;
+    font-size: 12.5px;
+    white-space: nowrap;
+}
+
+.barra-modulos a:hover {
+    background: var(--cor-nav-hover);
+    color: #fff;
+    text-decoration: none;
+}
+
+.barra-modulos a.ativo {
+    background: var(--cor-nav-ativa);
+    color: #fff;
+    box-shadow: inset 0 -3px 0 #ffffff66;
+}
+
+.barra-modulos .modulo-inativo {
+    color: #ffffff70;
+    cursor: default;
+}
+
+.barra-modulos .modulo-inicio {
+    padding: 0 .7rem;
+    font-size: 15px;
+}
+
+/* ------------------------------------------- cabecalho de pagina */
+
+.pagina-cabecalho {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: .85rem 0 .7rem;
+    border-bottom: 1px solid var(--cor-borda);
+    margin-bottom: 1rem;
+}
+
+.pagina-cabecalho h1 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.pagina-cabecalho .pagina-subtitulo {
+    color: var(--cor-texto-suave);
+    margin: .15rem 0 0;
+}
+
+.pagina-acoes {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    flex-wrap: wrap;
+}
+
+/* ------------------------------------------------------- portlets */
+
+.painel-colunas {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .painel-colunas {
+        grid-template-columns: 1fr;
+    }
+}
+
+.painel-coluna {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 0;
+}
+
+.portlet {
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+}
+
+/* A alca reproduz o indicador de arrastar do NetSuite. Por enquanto e
+   apenas visual: a reordenacao entra na fase de painel configuravel. */
+.portlet-alca {
+    height: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--cor-borda-suave);
+    background: var(--cor-cabecalho);
+    border-radius: var(--raio) var(--raio) 0 0;
+}
+
+.portlet-alca::before {
+    content: "";
+    width: 26px;
+    height: 3px;
+    border-top: 1px solid #b9c2c9;
+    border-bottom: 1px solid #b9c2c9;
+}
+
+.portlet-titulo {
+    padding: .5rem .75rem;
+    font-size: .95rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.portlet-corpo {
+    padding: .75rem;
+}
+
+.portlet-corpo.sem-espaco {
+    padding: 0;
+}
+
+.portlet-rodape {
+    padding: .5rem .75rem;
+    border-top: 1px solid var(--cor-borda-suave);
+    background: var(--cor-cabecalho);
+    color: var(--cor-texto-suave);
+    border-radius: 0 0 var(--raio) var(--raio);
+}
+
+/* Lista de links no estilo do portlet "Settings" da referencia. */
+.portlet-links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.portlet-links li + li {
+    margin-top: .3rem;
+}
+
+.portlet-links a {
+    display: block;
+    padding: .1rem 0;
+}
+
+.portlet-vazio {
+    color: var(--cor-texto-suave);
+    padding: .75rem;
+}
+
+/* Linha de lembrete: contagem em destaque + descricao clicavel. */
+.lembrete {
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+    padding: .4rem .75rem;
+    border-bottom: 1px solid var(--cor-borda-suave);
+}
+
+.lembrete:last-child {
+    border-bottom: 0;
+}
+
+.lembrete-contagem {
+    min-width: 2.2rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--cor-nav);
+}
+
+.lembrete-contagem.zero {
+    color: var(--cor-texto-suave);
+    font-weight: 400;
+}
+
+/* ---------------------------------------- ajustes sobre o Bootstrap */
+
+.card {
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+}
+
+.table {
+    font-size: 13px;
+    margin-bottom: 0;
+}
+
+.table > thead > tr > th {
+    background: var(--cor-cabecalho);
+    border-bottom: 1px solid var(--cor-borda);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    color: var(--cor-texto-suave);
+    white-space: nowrap;
+}
+
+.table > tbody > tr > td {
+    padding: .4rem .5rem;
+    vertical-align: middle;
+}
+
+/* Colunas numericas nao precisam esticar: mantem a tabela compacta,
+   como nos paineis de sistemas de gestao. */
+.table .num {
+    width: 92px;
+}
+
+.form-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cor-texto-suave);
+    margin-bottom: .15rem;
+}
+
+.form-control,
+.form-select {
+    font-size: 13px;
+    border-radius: var(--raio);
+    border-color: var(--cor-borda);
+}
+
+.btn {
+    font-size: 13px;
+    border-radius: var(--raio);
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--cor-nav);
+    --bs-btn-border-color: var(--cor-nav);
+    --bs-btn-hover-bg: var(--cor-nav-hover);
+    --bs-btn-hover-border-color: var(--cor-nav-hover);
+    --bs-btn-active-bg: var(--cor-nav-ativa);
+    --bs-btn-active-border-color: var(--cor-nav-ativa);
+}
+
+.badge {
+    font-weight: 600;
+    border-radius: var(--raio);
+}
+
+.alert {
+    border-radius: var(--raio);
+    padding: .5rem .75rem;
+}
+
+.pagination {
+    --bs-pagination-border-radius: var(--raio);
+    --bs-pagination-font-size: 12.5px;
+    --bs-pagination-active-bg: var(--cor-nav);
+    --bs-pagination-active-border-color: var(--cor-nav);
+    --bs-pagination-color: var(--cor-link);
+}

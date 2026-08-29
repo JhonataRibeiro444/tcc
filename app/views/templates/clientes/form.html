@@ -1,15 +1,14 @@
 {% extends "base.html" %}
 {% from "_macros.html" import campo, campo_select, campo_texto, campo_check %}
 
-{% block conteudo %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <h1 class="h3 mb-0">{{ titulo }}</h1>
-  <a class="btn btn-outline-secondary"
+{% block acoes %}
+  <a class="btn btn-sm btn-outline-secondary"
      href="{{ url_for('clientes.detalhar', cliente_id=cliente.id) if cliente else url_for('clientes.listar') }}">
     Cancelar
   </a>
-</div>
+{% endblock %}
 
+{% block conteudo %}
 <form method="post" novalidate>
   {{ form.hidden_tag() }}
 

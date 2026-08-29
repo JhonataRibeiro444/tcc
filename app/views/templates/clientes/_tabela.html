@@ -2,13 +2,13 @@
   {% if clientes %}
   <div class="table-responsive">
     <table class="table table-hover align-middle mb-0">
-      <thead class="table-light">
+      <thead>
         <tr>
           <th>Nome / Razao social</th>
           <th>Tipo</th>
           <th>CPF / CNPJ</th>
           <th>Cidade</th>
-          <th>Contatos</th>
+          <th class="text-end">Contatos</th>
           <th>Situacao</th>
         </tr>
       </thead>
@@ -17,15 +17,15 @@
         <tr>
           <td>
             <a href="{{ url_for('clientes.detalhar', cliente_id=cliente.id) }}"
-               class="fw-semibold text-decoration-none">{{ cliente.nome }}</a>
+               class="fw-semibold">{{ cliente.nome }}</a>
             {% if cliente.nome_fantasia %}
               <div class="small text-muted">{{ cliente.nome_fantasia }}</div>
             {% endif %}
           </td>
-          <td><span class="badge text-bg-light">{{ cliente.tipo_pessoa_label }}</span></td>
+          <td>{{ cliente.tipo_pessoa_label }}</td>
           <td>{{ cliente.documento_formatado }}</td>
           <td>{{ cliente.endereco_resumido or "-" }}</td>
-          <td>{{ cliente.contatos|length }}</td>
+          <td class="text-end">{{ cliente.contatos|length }}</td>
           <td>
             <span class="badge {{ 'text-bg-success' if cliente.ativo else 'text-bg-secondary' }}">
               {{ 'Ativo' if cliente.ativo else 'Inativo' }}
@@ -44,7 +44,7 @@
         {% if numero %}
           <li class="page-item {{ 'active' if numero == paginacao.page }}">
             <a class="page-link" href="#"
-               hx-get="{{ url_for('clientes.listar', busca=busca, situacao=situacao, pagina=numero) }}"
+               hx-get="{{ url_for('clientes.listar', busca=busca, situacao=situacao, filtro=filtro, tipo=tipo, pagina=numero) }}"
                hx-target="#tabela-clientes"
                hx-swap="outerHTML">{{ numero }}</a>
           </li>
@@ -56,9 +56,7 @@
   </nav>
   {% endif %}
 
-  <p class="text-muted small mt-3 mb-0">
-    {{ paginacao.total }} cliente(s) encontrado(s).
-  </p>
+  <p class="text-muted small mt-3 mb-0">{{ paginacao.total }} cliente(s) encontrado(s).</p>
   {% else %}
   <div class="text-center text-muted py-5">
     <p class="mb-1">Nenhum cliente encontrado.</p>

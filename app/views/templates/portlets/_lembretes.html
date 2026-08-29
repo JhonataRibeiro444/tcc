@@ -1,0 +1,12 @@
+<div class="portlet-corpo sem-espaco">
+  {% for item in dados.itens %}
+    <div class="lembrete">
+      <span class="lembrete-contagem {{ 'zero' if item.contagem == 0 }}">{{ item.contagem }}</span>
+      {% if item.contagem > 0 %}
+        <a href="{{ item.url }}">{{ item.descricao }}</a>
+      {% else %}
+        <span class="text-muted">{{ item.descricao }}</span>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>

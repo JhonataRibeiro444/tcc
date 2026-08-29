@@ -1,16 +1,5 @@
-body {
-    background-color: #f6f7f9;
-    color: #212529;
-}
-
-.card {
-    border: 1px solid #e6e8eb;
-    border-radius: .5rem;
-}
-
-.card-header {
-    border-bottom: 1px solid #e6e8eb;
-}
+/* Estilos utilitarios que nao pertencem ao tema visual.
+   As cores e a densidade da interface ficam em tema.css. */
 
 .htmx-indicator {
     display: none;

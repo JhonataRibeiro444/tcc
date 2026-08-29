@@ -15,7 +15,7 @@ gestao dos contatos vinculados a cada cliente.
 | Banco de dados | SQLite (desenvolvimento) |
 | Autenticacao | Flask-Login + hash de senha (Werkzeug) |
 | Formularios e CSRF | Flask-WTF / WTForms |
-| Interface | Jinja2 + Bootstrap 5 + HTMX |
+| Interface | Jinja2 + Bootstrap 5 + HTMX + JavaScript proprio |
 | Testes | pytest |
 
 ## Arquitetura
@@ -42,8 +42,12 @@ tcc-crm-daniel-e-jhonatan/
 |   |   `-- main_controller.py
 |   |-- utils/
 |   |   `-- validators.py     # Validacao de CPF/CNPJ e formatacao
+|   |-- portlets.py          # Registro dos blocos do painel inicial
 |   |-- views/templates/      # Camada de apresentacao (Jinja2)
-|   `-- static/css/
+|   |   `-- portlets/         # Um template por portlet
+|   `-- static/
+|       |-- css/tema.css      # Camada de tema sobre o Bootstrap
+|       `-- js/               # Mascaras, validacao e interface
 `-- tests/                    # Suite de testes automatizados
 ```
 
@@ -120,6 +124,19 @@ python -m pytest
 A suite cobre os validadores de documento, o fluxo de autenticacao e o CRUD de
 clientes e contatos, incluindo as respostas parciais usadas pelo HTMX.
 
+## Interface
+
+O layout se inspira na organizacao de tela dos sistemas de gestao
+empresarial (o Oracle NetSuite serviu de referencia): uma faixa superior
+clara com a busca global e a identificacao do usuario, uma faixa escura
+com os modulos, e o conteudo dividido em portlets.
+
+Os portlets do painel inicial vem de um registro em `app/portlets.py`:
+cada um declara chave, titulo, coluna e a funcao que busca seus dados.
+Adicionar um portlet novo e acrescentar uma entrada nesse registro. Nesta
+versao o layout e fixo; a personalizacao por usuario esta prevista nos
+proximos passos e reaproveita esse mesmo registro.
+
 ## Funcionalidades implementadas
 
 - [x] Login e logout com senha protegida por hash
@@ -130,11 +147,18 @@ clientes e contatos, incluindo as respostas parciais usadas pelo HTMX.
 - [x] Filtro por situacao e paginacao dos resultados
 - [x] Inativacao e reativacao de clientes
 - [x] Cadastro, edicao e remocao de contatos por cliente, com contato principal
-- [x] Painel com indicadores da base de clientes
+- [x] Painel inicial em portlets: configuracoes rapidas, lembretes,
+      resumo da base e ultimos cadastros
+- [x] Busca global de clientes e contatos na barra superior
+- [x] Listagem geral de contatos com busca
+- [x] Filtros de apoio na listagem (sem contato, cadastro incompleto, tipo)
 
 ## Proximos passos
 
 - Modulo de oportunidades com estagios de funil de vendas
 - Registro de interacoes (ligacoes, e-mails, reunioes) por cliente
-- Perfis de acesso (administrador e vendedor)
+- Perfis de acesso (administrador e vendedor), exibidos junto ao nome do
+  usuario na barra superior
+- Painel configuravel: reordenar e mostrar/ocultar portlets, salvo por
+  usuario
 - Relatorios e exportacao de dados

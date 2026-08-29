@@ -1,28 +1,29 @@
 {% extends "base.html" %}
 
-{% block conteudo %}
-<div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-2">
-  <div>
-    <h1 class="h3 mb-1">{{ cliente.nome }}</h1>
-    <p class="text-muted mb-0">
-      {{ cliente.tipo_pessoa_label }} &middot; {{ cliente.documento_formatado }}
-      <span class="badge ms-2 {{ 'text-bg-success' if cliente.ativo else 'text-bg-secondary' }}">
-        {{ 'Ativo' if cliente.ativo else 'Inativo' }}
-      </span>
-    </p>
-  </div>
-  <div class="d-flex gap-2">
-    <a class="btn btn-outline-secondary" href="{{ url_for('clientes.listar') }}">Voltar</a>
-    <a class="btn btn-primary" href="{{ url_for('clientes.editar', cliente_id=cliente.id) }}">Editar</a>
-    <form method="post" action="{{ url_for('clientes.alternar_situacao', cliente_id=cliente.id) }}">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <button type="submit" class="btn {{ 'btn-outline-danger' if cliente.ativo else 'btn-outline-success' }}">
-        {{ 'Inativar' if cliente.ativo else 'Reativar' }}
-      </button>
-    </form>
-  </div>
-</div>
+{% block cabecalho %}{{ cliente.nome }}{% endblock %}
 
+{% block subtitulo %}
+  <p class="pagina-subtitulo">
+    {{ cliente.tipo_pessoa_label }} &middot; {{ cliente.documento_formatado }}
+    <span class="badge ms-2 {{ 'text-bg-success' if cliente.ativo else 'text-bg-secondary' }}">
+      {{ 'Ativo' if cliente.ativo else 'Inativo' }}
+    </span>
+  </p>
+{% endblock %}
+
+{% block acoes %}
+  <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('clientes.listar') }}">Voltar</a>
+  <a class="btn btn-sm btn-primary" href="{{ url_for('clientes.editar', cliente_id=cliente.id) }}">Editar</a>
+  <form method="post" action="{{ url_for('clientes.alternar_situacao', cliente_id=cliente.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit"
+            class="btn btn-sm {{ 'btn-outline-danger' if cliente.ativo else 'btn-outline-success' }}">
+      {{ 'Inativar' if cliente.ativo else 'Reativar' }}
+    </button>
+  </form>
+{% endblock %}
+
+{% block conteudo %}
 <div class="row g-3">
   <div class="col-lg-5">
     <div class="card h-100">

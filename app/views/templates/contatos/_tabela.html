@@ -1,0 +1,63 @@
+<div id="tabela-contatos">
+  {% if contatos %}
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Cargo</th>
+          <th>Cliente</th>
+          <th>E-mail</th>
+          <th>Telefone</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for contato in contatos %}
+        <tr>
+          <td>
+            <span class="fw-semibold">{{ contato.nome }}</span>
+            {% if contato.principal %}
+              <span class="badge text-bg-primary ms-1">Principal</span>
+            {% endif %}
+          </td>
+          <td>{{ contato.cargo or "-" }}</td>
+          <td>
+            <a href="{{ url_for('clientes.detalhar', cliente_id=contato.cliente_id) }}">
+              {{ contato.cliente.nome }}
+            </a>
+          </td>
+          <td>{{ contato.email or "-" }}</td>
+          <td>{{ contato.telefone_formatado or "-" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if paginacao.pages > 1 %}
+  <nav class="mt-3">
+    <ul class="pagination pagination-sm mb-0">
+      {% for numero in paginacao.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+        {% if numero %}
+          <li class="page-item {{ 'active' if numero == paginacao.page }}">
+            <a class="page-link" href="#"
+               hx-get="{{ url_for('contatos.listar', busca=busca, pagina=numero) }}"
+               hx-target="#tabela-contatos"
+               hx-swap="outerHTML">{{ numero }}</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">...</span></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </nav>
+  {% endif %}
+
+  <p class="text-muted small mt-3 mb-0">{{ paginacao.total }} contato(s) encontrado(s).</p>
+  {% else %}
+  <div class="text-center text-muted py-5">
+    <p class="mb-1">Nenhum contato encontrado.</p>
+    {% if busca %}<p class="small mb-0">Tente outro termo de busca.</p>{% endif %}
+  </div>
+  {% endif %}
+</div>

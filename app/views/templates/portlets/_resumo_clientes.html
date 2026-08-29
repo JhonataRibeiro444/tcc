@@ -1,0 +1,43 @@
+<div class="portlet-corpo sem-espaco">
+  <div class="table-responsive">
+    <table class="table table-sm mb-0">
+      <thead>
+        <tr>
+          <th>Tipo de pessoa</th>
+          <th class="text-end num">Ativos</th>
+          <th class="text-end num">Inativos</th>
+          <th class="text-end num">Total</th>
+          <th class="text-end num">Contatos</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for linha in dados.linhas %}
+        <tr>
+          <td>
+            <a href="{{ url_for('clientes.listar', tipo=linha.codigo) }}">{{ linha.rotulo }}</a>
+          </td>
+          <td class="text-end num">{{ linha.ativos }}</td>
+          <td class="text-end num text-muted">{{ linha.inativos }}</td>
+          <td class="text-end num fw-semibold">{{ linha.total }}</td>
+          <td class="text-end num">{{ linha.contatos }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr class="fw-semibold">
+          <td>Total</td>
+          <td class="text-end num">{{ dados.totais.ativos }}</td>
+          <td class="text-end num">{{ dados.totais.inativos }}</td>
+          <td class="text-end num">{{ dados.totais.total }}</td>
+          <td class="text-end num">{{ dados.totais.contatos }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+<div class="portlet-rodape">
+  Ir para:
+  <a href="{{ url_for('clientes.listar') }}">Clientes</a> |
+  <a href="{{ url_for('clientes.novo') }}">Novo cadastro</a> |
+  <a href="{{ url_for('contatos.listar') }}">Contatos</a>
+</div>

@@ -16,6 +16,18 @@ from app.utils.validators import apenas_digitos
 
 cliente_bp = Blueprint("clientes", __name__, url_prefix="/clientes")
 
+# Recortes usados pelos portlets do painel para apontar direto para uma
+# lista ja filtrada.
+ROTULOS_FILTRO = {
+    "sem_contato": "clientes ativos sem contato cadastrado",
+    "incompleto": "clientes sem e-mail ou telefone",
+}
+
+ROTULOS_TIPO = {
+    "F": "somente pessoas fisicas",
+    "J": "somente pessoas juridicas",
+}
+
 
 def _e_requisicao_htmx():
     return request.headers.get("HX-Request") == "true"
@@ -43,34 +55,49 @@ def _aplicar_form_no_cliente(form, cliente):
 @cliente_bp.route("/")
 @login_required
 def listar():
-    """Listagem com busca por nome, documento ou e-mail.
+    """Listagem com busca livre e filtros auxiliares.
 
     Quando a requisicao vem do HTMX devolve apenas a tabela, o que permite
     atualizar o resultado da busca sem recarregar a pagina inteira.
+
+    Os filtros `filtro` e `tipo` existem para que os portlets do painel
+    consigam apontar direto para um recorte da base.
     """
     busca = (request.args.get("busca") or "").strip()
     situacao = request.args.get("situacao") or "todos"
+    filtro = request.args.get("filtro") or ""
+    tipo = request.args.get("tipo") or ""
     pagina = request.args.get("pagina", 1, type=int)
 
     consulta = Cliente.query
 
     if busca:
         termo = f"%{busca}%"
-        consulta = consulta.filter(
-            db.or_(
-                Cliente.nome.ilike(termo),
-                Cliente.nome_fantasia.ilike(termo),
-                Cliente.email.ilike(termo),
-                Cliente.documento.like(f"%{apenas_digitos(busca)}%")
-                if apenas_digitos(busca)
-                else Cliente.documento.ilike(termo),
-            )
-        )
+        digitos = apenas_digitos(busca)
+        condicoes = [
+            Cliente.nome.ilike(termo),
+            Cliente.nome_fantasia.ilike(termo),
+            Cliente.email.ilike(termo),
+        ]
+        if digitos:
+            condicoes.append(Cliente.documento.like(f"%{digitos}%"))
+        consulta = consulta.filter(db.or_(*condicoes))
 
     if situacao == "ativos":
         consulta = consulta.filter_by(ativo=True)
     elif situacao == "inativos":
         consulta = consulta.filter_by(ativo=False)
+
+    if tipo in ("F", "J"):
+        consulta = consulta.filter_by(tipo_pessoa=tipo)
+
+    if filtro == "sem_contato":
+        consulta = consulta.filter(~Cliente.contatos.any(), Cliente.ativo.is_(True))
+    elif filtro == "incompleto":
+        consulta = consulta.filter(
+            Cliente.ativo.is_(True),
+            db.or_(Cliente.email.is_(None), Cliente.telefone.is_(None)),
+        )
 
     paginacao = consulta.order_by(Cliente.nome).paginate(
         page=pagina,
@@ -83,6 +110,9 @@ def listar():
         "clientes": paginacao.items,
         "busca": busca,
         "situacao": situacao,
+        "filtro": filtro,
+        "tipo": tipo,
+        "rotulo_filtro": ROTULOS_FILTRO.get(filtro) or ROTULOS_TIPO.get(tipo),
         "titulo": "Clientes",
     }
 

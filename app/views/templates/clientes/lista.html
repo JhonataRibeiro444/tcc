@@ -1,14 +1,22 @@
 {% extends "base.html" %}
 
-{% block conteudo %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <h1 class="h3 mb-0">Clientes</h1>
-  <a class="btn btn-primary" href="{{ url_for('clientes.novo') }}">Novo cliente</a>
-</div>
+{% block acoes %}
+  <a class="btn btn-sm btn-primary" href="{{ url_for('clientes.novo') }}">Novo cliente</a>
+{% endblock %}
 
+{% block subtitulo %}
+  {% if rotulo_filtro %}
+    <p class="pagina-subtitulo">
+      Exibindo {{ rotulo_filtro }} &middot;
+      <a href="{{ url_for('clientes.listar') }}">limpar filtro</a>
+    </p>
+  {% endif %}
+{% endblock %}
+
+{% block conteudo %}
 <div class="card">
   <div class="card-body">
-    <div class="row g-2 mb-3">
+    <form id="filtros-clientes" class="row g-2 mb-3" onsubmit="return false;">
       <div class="col-md-8">
         <input type="search"
                name="busca"
@@ -19,7 +27,7 @@
                hx-trigger="keyup changed delay:300ms, search"
                hx-target="#tabela-clientes"
                hx-swap="outerHTML"
-               hx-include="[name='situacao']"
+               hx-include="#filtros-clientes"
                hx-indicator="#carregando">
       </div>
       <div class="col-md-4">
@@ -28,13 +36,17 @@
                 hx-get="{{ url_for('clientes.listar') }}"
                 hx-target="#tabela-clientes"
                 hx-swap="outerHTML"
-                hx-include="[name='busca']">
+                hx-include="#filtros-clientes">
           <option value="todos" {{ 'selected' if situacao == 'todos' }}>Todas as situacoes</option>
           <option value="ativos" {{ 'selected' if situacao == 'ativos' }}>Somente ativos</option>
           <option value="inativos" {{ 'selected' if situacao == 'inativos' }}>Somente inativos</option>
         </select>
       </div>
-    </div>
+
+      {# Preserva o recorte vindo dos portlets do painel nas buscas seguintes. #}
+      <input type="hidden" name="filtro" value="{{ filtro }}">
+      <input type="hidden" name="tipo" value="{{ tipo }}">
+    </form>
 
     <div id="carregando" class="htmx-indicator text-muted small mb-2">Buscando...</div>
 

@@ -1,64 +1,29 @@
 {% extends "base.html" %}
 
+{% block acoes %}
+  <a class="btn btn-sm btn-primary" href="{{ url_for('clientes.novo') }}">Novo cliente</a>
+{% endblock %}
+
 {% block conteudo %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <h1 class="h3 mb-0">Painel</h1>
-  <a class="btn btn-primary" href="{{ url_for('clientes.novo') }}">Novo cliente</a>
-</div>
-
-<div class="row g-3 mb-4">
-  <div class="col-sm-6 col-lg-3">
-    <div class="card h-100">
-      <div class="card-body">
-        <p class="text-muted mb-1 small text-uppercase">Clientes</p>
-        <p class="display-6 mb-0">{{ total_clientes }}</p>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6 col-lg-3">
-    <div class="card h-100">
-      <div class="card-body">
-        <p class="text-muted mb-1 small text-uppercase">Ativos</p>
-        <p class="display-6 mb-0 text-success">{{ clientes_ativos }}</p>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6 col-lg-3">
-    <div class="card h-100">
-      <div class="card-body">
-        <p class="text-muted mb-1 small text-uppercase">Inativos</p>
-        <p class="display-6 mb-0 text-secondary">{{ clientes_inativos }}</p>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6 col-lg-3">
-    <div class="card h-100">
-      <div class="card-body">
-        <p class="text-muted mb-1 small text-uppercase">Contatos</p>
-        <p class="display-6 mb-0">{{ total_contatos }}</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="card">
-  <div class="card-header bg-white fw-semibold">Ultimos clientes cadastrados</div>
-  {% if ultimos_clientes %}
-  <ul class="list-group list-group-flush">
-    {% for cliente in ultimos_clientes %}
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      <div>
-        <a href="{{ url_for('clientes.detalhar', cliente_id=cliente.id) }}">{{ cliente.nome }}</a>
-        <div class="small text-muted">{{ cliente.documento_formatado }}</div>
-      </div>
-      <span class="badge {{ 'text-bg-success' if cliente.ativo else 'text-bg-secondary' }}">
-        {{ 'Ativo' if cliente.ativo else 'Inativo' }}
-      </span>
-    </li>
+<div class="painel-colunas">
+  <div class="painel-coluna">
+    {% for item in coluna_esquerda %}
+      <section class="portlet" data-portlet="{{ item.portlet.chave }}">
+        <div class="portlet-alca" title="A reordenacao entra na fase de painel configuravel"></div>
+        <div class="portlet-titulo">{{ item.portlet.titulo }}</div>
+        {% with dados = item.dados %}{% include item.portlet.template %}{% endwith %}
+      </section>
     {% endfor %}
-  </ul>
-  {% else %}
-  <div class="card-body text-muted">Nenhum cliente cadastrado ainda.</div>
-  {% endif %}
+  </div>
+
+  <div class="painel-coluna">
+    {% for item in coluna_direita %}
+      <section class="portlet" data-portlet="{{ item.portlet.chave }}">
+        <div class="portlet-alca" title="A reordenacao entra na fase de painel configuravel"></div>
+        <div class="portlet-titulo">{{ item.portlet.titulo }}</div>
+        {% with dados = item.dados %}{% include item.portlet.template %}{% endwith %}
+      </section>
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}

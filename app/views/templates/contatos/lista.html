@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block acoes %}
+  <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('clientes.listar') }}">Ir para clientes</a>
+{% endblock %}
+
+{% block conteudo %}
+<div class="card">
+  <div class="card-body">
+    <div class="row g-2 mb-3">
+      <div class="col-md-8">
+        <input type="search"
+               name="busca"
+               value="{{ busca }}"
+               class="form-control"
+               placeholder="Buscar por nome, cargo, e-mail ou cliente..."
+               hx-get="{{ url_for('contatos.listar') }}"
+               hx-trigger="keyup changed delay:300ms, search"
+               hx-target="#tabela-contatos"
+               hx-swap="outerHTML"
+               hx-indicator="#carregando-contatos">
+      </div>
+    </div>
+
+    <div id="carregando-contatos" class="htmx-indicator text-muted small mb-2">Buscando...</div>
+
+    {% include "contatos/_tabela.html" %}
+  </div>
+</div>
+{% endblock %}
