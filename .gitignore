@@ -7,12 +7,13 @@ env/
 __pycache__/
 *.pyc
 *.pyo
+.pytest_cache/
 
 # Banco de dados local
 *.db
 instance/
 
-# Variáveis de ambiente
+# Variaveis de ambiente
 .env
 
 # VSCode

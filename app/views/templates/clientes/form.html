@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% from "_macros.html" import campo, campo_select, campo_texto, campo_check %}
+
+{% block conteudo %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0">{{ titulo }}</h1>
+  <a class="btn btn-outline-secondary"
+     href="{{ url_for('clientes.detalhar', cliente_id=cliente.id) if cliente else url_for('clientes.listar') }}">
+    Cancelar
+  </a>
+</div>
+
+<form method="post" novalidate>
+  {{ form.hidden_tag() }}
+
+  <div class="card mb-3">
+    <div class="card-header bg-white fw-semibold">Identificacao</div>
+    <div class="card-body">
+      <div class="row g-3">
+        {{ campo_select(form.tipo_pessoa, colunas="col-md-4") }}
+        {{ campo(form.documento, colunas="col-md-4", placeholder="Somente numeros ou com pontuacao") }}
+        {{ campo(form.nome, colunas="col-md-8") }}
+        {{ campo(form.nome_fantasia, colunas="col-md-4") }}
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header bg-white fw-semibold">Contato</div>
+    <div class="card-body">
+      <div class="row g-3">
+        {{ campo(form.email, colunas="col-md-6", placeholder="cliente@exemplo.com") }}
+        {{ campo(form.telefone, colunas="col-md-6", placeholder="(11) 91234-5678") }}
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header bg-white fw-semibold">Endereco</div>
+    <div class="card-body">
+      <div class="row g-3">
+        {{ campo(form.cep, colunas="col-md-3") }}
+        {{ campo(form.logradouro, colunas="col-md-6") }}
+        {{ campo(form.numero, colunas="col-md-3") }}
+        {{ campo(form.complemento, colunas="col-md-4") }}
+        {{ campo(form.bairro, colunas="col-md-4") }}
+        {{ campo(form.cidade, colunas="col-md-3") }}
+        {{ campo_select(form.uf, colunas="col-md-1") }}
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header bg-white fw-semibold">Outros dados</div>
+    <div class="card-body">
+      <div class="row g-3">
+        {{ campo_texto(form.observacoes) }}
+        {{ campo_check(form.ativo) }}
+      </div>
+    </div>
+  </div>
+
+  {{ form.submit(class="btn btn-primary px-4") }}
+</form>
+{% endblock %}

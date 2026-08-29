@@ -1,5 +1,26 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 40px;
-    color: #222;
+    background-color: #f6f7f9;
+    color: #212529;
+}
+
+.card {
+    border: 1px solid #e6e8eb;
+    border-radius: .5rem;
+}
+
+.card-header {
+    border-bottom: 1px solid #e6e8eb;
+}
+
+.htmx-indicator {
+    display: none;
+}
+
+.htmx-request .htmx-indicator,
+.htmx-request.htmx-indicator {
+    display: block;
+}
+
+dl dt {
+    font-weight: 400;
 }

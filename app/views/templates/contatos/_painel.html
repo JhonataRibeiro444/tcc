@@ -1,0 +1,76 @@
+{% from "_macros.html" import campo, campo_texto, campo_check %}
+
+<div id="painel-contatos" class="card h-100">
+  <div class="card-header bg-white d-flex justify-content-between align-items-center">
+    <span class="fw-semibold">Contatos</span>
+    {% if not mostrar_form %}
+    <button class="btn btn-sm btn-primary"
+            hx-get="{{ url_for('contatos.novo', cliente_id=cliente.id) }}"
+            hx-target="#painel-contatos"
+            hx-swap="outerHTML">Novo contato</button>
+    {% endif %}
+  </div>
+
+  {% if mostrar_form %}
+  <div class="card-body border-bottom bg-light">
+    <form novalidate
+          hx-post="{{ url_for('contatos.editar', contato_id=contato_em_edicao.id) if contato_em_edicao else url_for('contatos.criar', cliente_id=cliente.id) }}"
+          hx-target="#painel-contatos"
+          hx-swap="outerHTML">
+      {{ form_contato.hidden_tag() }}
+      <div class="row g-3">
+        {{ campo(form_contato.nome, colunas="col-md-7") }}
+        {{ campo(form_contato.cargo, colunas="col-md-5") }}
+        {{ campo(form_contato.email, colunas="col-md-7") }}
+        {{ campo(form_contato.telefone, colunas="col-md-5") }}
+        {{ campo_texto(form_contato.observacoes, linhas=2) }}
+        {{ campo_check(form_contato.principal) }}
+      </div>
+      <div class="d-flex gap-2 mt-3">
+        {{ form_contato.submit(class="btn btn-primary btn-sm") }}
+        <button type="button" class="btn btn-outline-secondary btn-sm"
+                hx-get="{{ url_for('contatos.cancelar', cliente_id=cliente.id) }}"
+                hx-target="#painel-contatos"
+                hx-swap="outerHTML">Cancelar</button>
+      </div>
+    </form>
+  </div>
+  {% endif %}
+
+  {% if cliente.contatos %}
+  <ul class="list-group list-group-flush">
+    {% for contato in cliente.contatos %}
+    <li class="list-group-item d-flex justify-content-between align-items-start gap-2">
+      <div>
+        <div class="fw-semibold">
+          {{ contato.nome }}
+          {% if contato.principal %}
+            <span class="badge text-bg-primary ms-1">Principal</span>
+          {% endif %}
+        </div>
+        <div class="small text-muted">
+          {% if contato.cargo %}{{ contato.cargo }} &middot; {% endif %}
+          {{ contato.email or "sem e-mail" }}
+          {% if contato.telefone %} &middot; {{ contato.telefone_formatado }}{% endif %}
+        </div>
+      </div>
+      <div class="d-flex gap-1 flex-shrink-0">
+        <button class="btn btn-sm btn-outline-secondary"
+                hx-get="{{ url_for('contatos.editar', contato_id=contato.id) }}"
+                hx-target="#painel-contatos"
+                hx-swap="outerHTML">Editar</button>
+        <button class="btn btn-sm btn-outline-danger"
+                hx-post="{{ url_for('contatos.excluir', contato_id=contato.id) }}"
+                hx-target="#painel-contatos"
+                hx-swap="outerHTML"
+                hx-confirm="Remover o contato {{ contato.nome }}?">Remover</button>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="card-body text-muted small">
+    Nenhum contato cadastrado para este cliente.
+  </div>
+  {% endif %}
+</div>

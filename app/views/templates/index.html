@@ -1,12 +1,64 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ titulo }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <h1>{{ titulo }}</h1>
-    <p>Estrutura MVC funcionando corretamente 🎉</p>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block conteudo %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0">Painel</h1>
+  <a class="btn btn-primary" href="{{ url_for('clientes.novo') }}">Novo cliente</a>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-sm-6 col-lg-3">
+    <div class="card h-100">
+      <div class="card-body">
+        <p class="text-muted mb-1 small text-uppercase">Clientes</p>
+        <p class="display-6 mb-0">{{ total_clientes }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-3">
+    <div class="card h-100">
+      <div class="card-body">
+        <p class="text-muted mb-1 small text-uppercase">Ativos</p>
+        <p class="display-6 mb-0 text-success">{{ clientes_ativos }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-3">
+    <div class="card h-100">
+      <div class="card-body">
+        <p class="text-muted mb-1 small text-uppercase">Inativos</p>
+        <p class="display-6 mb-0 text-secondary">{{ clientes_inativos }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-3">
+    <div class="card h-100">
+      <div class="card-body">
+        <p class="text-muted mb-1 small text-uppercase">Contatos</p>
+        <p class="display-6 mb-0">{{ total_contatos }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header bg-white fw-semibold">Ultimos clientes cadastrados</div>
+  {% if ultimos_clientes %}
+  <ul class="list-group list-group-flush">
+    {% for cliente in ultimos_clientes %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <a href="{{ url_for('clientes.detalhar', cliente_id=cliente.id) }}">{{ cliente.nome }}</a>
+        <div class="small text-muted">{{ cliente.documento_formatado }}</div>
+      </div>
+      <span class="badge {{ 'text-bg-success' if cliente.ativo else 'text-bg-secondary' }}">
+        {{ 'Ativo' if cliente.ativo else 'Inativo' }}
+      </span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="card-body text-muted">Nenhum cliente cadastrado ainda.</div>
+  {% endif %}
+</div>
+{% endblock %}

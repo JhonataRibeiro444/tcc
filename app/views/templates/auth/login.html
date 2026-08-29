@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "_macros.html" import campo, campo_check %}
+
+{% block conteudo %}
+<div class="row justify-content-center" style="margin-top: 8vh;">
+  <div class="col-md-5 col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="h4 text-center mb-1">CRM</h1>
+        <p class="text-center text-muted small mb-4">Acesse com suas credenciais</p>
+
+        <form method="post" novalidate>
+          {{ form.hidden_tag() }}
+          <div class="row g-3">
+            {{ campo(form.email, colunas="col-12", placeholder="voce@exemplo.com") }}
+            {{ campo(form.senha, colunas="col-12") }}
+            {{ campo_check(form.lembrar) }}
+          </div>
+          <div class="d-grid mt-4">
+            {{ form.submit(class="btn btn-primary") }}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

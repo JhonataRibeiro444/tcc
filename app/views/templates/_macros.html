@@ -1,0 +1,38 @@
+{% macro campo(field, colunas="col-md-6", placeholder="") %}
+<div class="{{ colunas }}">
+  {{ field.label(class="form-label") }}
+  {{ field(class="form-control" + (" is-invalid" if field.errors else ""), placeholder=placeholder) }}
+  {% for erro in field.errors %}
+    <div class="invalid-feedback">{{ erro }}</div>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro campo_select(field, colunas="col-md-6") %}
+<div class="{{ colunas }}">
+  {{ field.label(class="form-label") }}
+  {{ field(class="form-select" + (" is-invalid" if field.errors else "")) }}
+  {% for erro in field.errors %}
+    <div class="invalid-feedback">{{ erro }}</div>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro campo_texto(field, colunas="col-12", linhas=3) %}
+<div class="{{ colunas }}">
+  {{ field.label(class="form-label") }}
+  {{ field(class="form-control" + (" is-invalid" if field.errors else ""), rows=linhas) }}
+  {% for erro in field.errors %}
+    <div class="invalid-feedback">{{ erro }}</div>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro campo_check(field, colunas="col-12") %}
+<div class="{{ colunas }}">
+  <div class="form-check">
+    {{ field(class="form-check-input") }}
+    {{ field.label(class="form-check-label") }}
+  </div>
+</div>
+{% endmacro %}
