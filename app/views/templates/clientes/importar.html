@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<div class="card">
+  <div class="card-body">
+    <p>
+      Envie uma planilha <strong>.xlsx</strong> ou <strong>.csv</strong> com uma linha por
+      cliente (o contato principal e opcional e vai nas ultimas colunas).
+      <a href="{{ url_for('clientes.importar_modelo') }}">Baixar planilha modelo</a>.
+    </p>
+    <p class="text-muted small">
+      Nada e gravado agora: na proxima tela voce confere linha a linha o que sera
+      importado antes de confirmar.
+    </p>
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="mb-3">
+        {{ form.arquivo.label(class="form-label") }}
+        {{ form.arquivo(class="form-control") }}
+        {% for erro in form.arquivo.errors %}
+          <div class="text-danger small">{{ erro }}</div>
+        {% endfor %}
+      </div>
+      {{ form.submit(class="btn btn-primary") }}
+      <a href="{{ url_for('clientes.listar') }}" class="btn btn-outline-secondary">Cancelar</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

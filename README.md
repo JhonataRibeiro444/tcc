@@ -41,7 +41,8 @@ tcc-crm-daniel-e-jhonatan/
 |   |   |-- contato_controller.py
 |   |   `-- main_controller.py
 |   |-- utils/
-|   |   `-- validators.py     # Validacao de CPF/CNPJ e formatacao
+|   |   |-- validators.py     # Validacao de CPF/CNPJ e formatacao
+|   |   `-- planilhas.py      # Importacao/exportacao de clientes via .xlsx/.csv
 |   |-- portlets.py          # Registro dos blocos do painel inicial
 |   |-- views/templates/      # Camada de apresentacao (Jinja2)
 |   |   `-- portlets/         # Um template por portlet
@@ -121,8 +122,9 @@ A aplicacao fica disponivel em <http://127.0.0.1:5000>.
 python -m pytest
 ```
 
-A suite cobre os validadores de documento, o fluxo de autenticacao e o CRUD de
-clientes e contatos, incluindo as respostas parciais usadas pelo HTMX.
+A suite cobre os validadores de documento, o fluxo de autenticacao, o CRUD de
+clientes e contatos (incluindo as respostas parciais usadas pelo HTMX) e a
+importacao/exportacao de planilhas.
 
 ## Interface
 
@@ -152,6 +154,11 @@ proximos passos e reaproveita esse mesmo registro.
 - [x] Busca global de clientes e contatos na barra superior
 - [x] Listagem geral de contatos com busca
 - [x] Filtros de apoio na listagem (sem contato, cadastro incompleto, tipo)
+- [x] Importacao de clientes (com contato principal opcional) a partir de
+      planilha .xlsx ou .csv, com pre-visualizacao e relatorio de erros antes
+      de gravar
+- [x] Exportacao de clientes para .xlsx ou .csv, respeitando os filtros da
+      listagem
 
 ## Proximos passos
 
@@ -161,4 +168,4 @@ proximos passos e reaproveita esse mesmo registro.
   usuario na barra superior
 - Painel configuravel: reordenar e mostrar/ocultar portlets, salvo por
   usuario
-- Relatorios e exportacao de dados
+- Relatorios gerenciais (alem da exportacao de clientes ja disponivel)

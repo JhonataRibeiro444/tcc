@@ -1,6 +1,27 @@
 {% extends "base.html" %}
 
 {% block acoes %}
+  <div class="dropdown d-inline-block">
+    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+      Planilha
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item" href="{{ url_for('clientes.importar') }}">Importar</a></li>
+      <li>
+        <a class="dropdown-item"
+           href="{{ url_for('clientes.exportar', formato='xlsx', busca=busca, situacao=situacao, filtro=filtro, tipo=tipo) }}">
+          Exportar (.xlsx)
+        </a>
+      </li>
+      <li>
+        <a class="dropdown-item"
+           href="{{ url_for('clientes.exportar', formato='csv', busca=busca, situacao=situacao, filtro=filtro, tipo=tipo) }}">
+          Exportar (.csv)
+        </a>
+      </li>
+    </ul>
+  </div>
   <a class="btn btn-sm btn-primary" href="{{ url_for('clientes.novo') }}">Novo cliente</a>
 {% endblock %}
 
