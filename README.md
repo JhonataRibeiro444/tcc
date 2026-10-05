@@ -1,4 +1,4 @@
-# CRM - TCC Daniel e Jhonatan
+# CRM - TCC Daniel e Jhonatan 
 
 Sistema de CRM (Customer Relationship Management) desenvolvido como Trabalho de
 Conclusao de Curso. Esta etapa contempla o nucleo cadastral do sistema:
@@ -169,3 +169,5 @@ proximos passos e reaproveita esse mesmo registro.
 - Painel configuravel: reordenar e mostrar/ocultar portlets, salvo por
   usuario
 - Relatorios gerenciais (alem da exportacao de clientes ja disponivel)
+
+Desenvolvido por Daniel Amaral e Jhonatan Ribeiro
