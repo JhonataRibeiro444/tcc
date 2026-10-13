@@ -22,3 +22,9 @@ instance/
 # Sistema
 .DS_Store
 Thumbs.db
+
+# Cobertura de testes
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
