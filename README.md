@@ -5,6 +5,9 @@ Conclusao de Curso. Esta etapa contempla o nucleo cadastral do sistema:
 autenticacao de usuarios, gestao de clientes (pessoa fisica e juridica) e
 gestao dos contatos vinculados a cada cliente.
 
+A documentacao tecnica (arquitetura, decisoes, specs) esta em [docs/](docs/README.md), e o
+andamento do trabalho nas [issues do GitHub](https://github.com/JhonataRibeiro444/tcc/issues).
+
 ## Tecnologias
 
 | Camada | Tecnologia |

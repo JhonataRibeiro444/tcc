@@ -1,3 +1,7 @@
+---
+type: research
+status: current
+---
 # Pesquisa — GitHub Issues, Milestones e Labels com `to-prd` / `to-issues`
 
 Data: 2026-10-13 · Nível: comparison · Fontes: skills de `jgbriel-io/jgbriel-skills`
