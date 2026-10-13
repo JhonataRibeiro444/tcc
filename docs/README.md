@@ -36,6 +36,7 @@ próprias e não segue este guia (ver `.claude/skills/tcc-writing/`).
 | 004 | [Contatos](specs/004-contatos.md) | #12 |
 | 005 | [Painel e interface](specs/005-painel-e-interface.md) | #15 |
 | 006 | [Importação e exportação de planilhas](specs/006-importacao-e-exportacao-de-planilhas.md) | #19 |
+| 007 | [Cobertura de testes](specs/007-cobertura-de-testes.md) | #22 |
 
 O arquivo do spec é a verdade; a issue no GitHub é uma cópia. Ao mudar um, atualize o outro.
 

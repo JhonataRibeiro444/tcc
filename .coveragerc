@@ -1,0 +1,9 @@
+[run]
+source = app
+branch = True
+
+[report]
+# Piso atual; sobe para 90 quando as fatias de testes do PRD #22 fecharem.
+fail_under = 83
+show_missing = True
+skip_covered = True

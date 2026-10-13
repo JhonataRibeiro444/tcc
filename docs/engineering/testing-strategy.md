@@ -4,9 +4,21 @@ status: current
 ---
 # Estratégia de testes
 
+## Rodar
+
+```powershell
+pip install -r requirements-dev.txt
+python -m pytest
+```
+
+Todo `pytest` mede a cobertura de linhas e branches de `app/` (`.coveragerc`) e lista as linhas
+faltantes dos arquivos não totalmente cobertos. A suíte **falha abaixo do piso** definido em
+`fail_under`: hoje 83%, o patamar medido em 2026-10-13; sobe para 90% quando as fatias de testes
+do PRD #22 fecharem. O piso só sobe, nunca desce.
+
 ## Hoje
 
-Suíte pytest em `tests/`, rodada com `python -m pytest`. Cada teste recebe uma aplicação na
+Suíte pytest em `tests/`. Cada teste recebe uma aplicação na
 configuração `testing` (SQLite em memória, CSRF desligado) com um usuário já criado.
 
 | Fixture (`tests/conftest.py`) | Entrega |
@@ -35,9 +47,9 @@ banco juntos, verificando o comportamento visível (status, HTML, registros grav
 
 ## Lacunas conhecidas
 
-- Sem medição de cobertura.
+- Cobertura abaixo de 90% (CLI, importação, autenticação e contatos) — PRD #22.
 - Sem testes no navegador (o JavaScript de máscaras e as trocas HTMX não são exercitados de verdade).
 - Sem testes de acessibilidade.
 
-A ampliação da suíte (cobertura, testes unitários e end-to-end com Playwright) é a próxima frente
-de trabalho e terá spec próprio.
+A ampliação da suíte (cobertura, testes unitários e end-to-end com Playwright) está no
+[spec 007](../specs/007-cobertura-de-testes.md).
