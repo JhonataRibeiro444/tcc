@@ -1,6 +1,6 @@
 ---
 type: spec
-status: draft
+status: current
 labels: []
 depends_on: [1, 2, 3, 4, 5, 6]
 ---
