@@ -45,7 +45,7 @@ configurações rápidas, lembretes, resumo de clientes e últimos cadastros. Ve
 |---|---|
 | `static/css/tema.css` | Camada de tema inspirada no NetSuite (cores, faixas, portlets) |
 | `static/css/style.css` | Estilos da aplicação |
-| `static/js/mascaras.js` | Máscaras de CPF, CNPJ, telefone e CEP |
+| `static/js/mascaras.js` | Máscaras de CPF, CNPJ, telefone e CEP; validação de CPF/CNPJ no navegador; consulta do CEP ao ViaCEP (`viacep.com.br`) para preencher o endereço |
 | `static/js/interface.js` | Comportamentos de interface |
 
 ## Pontos em aberto

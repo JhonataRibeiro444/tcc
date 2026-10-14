@@ -28,6 +28,7 @@ priorizado.
 
 ## Fora de escopo
 
-- Integrações com serviços externos (consulta de CEP/CNPJ, e-mail, telefonia)
+- Integrações com serviços externos (consulta de CNPJ, e-mail, telefonia). A única integração
+  existente é a consulta de CEP ao ViaCEP, feita pelo navegador no cadastro de clientes
 - Aplicativo móvel nativo
 - Multiempresa (vários clientes do CRM na mesma instalação)

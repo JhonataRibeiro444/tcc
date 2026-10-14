@@ -28,6 +28,7 @@ flowchart LR
     U[Usuário no navegador] -->|HTML e fragmentos HTMX| F[Aplicação Flask]
     F --> DB[(SQLite)]
     F -->|planilhas pendentes| T[Pasta temporária do SO]
+    U -->|consulta de CEP| V[ViaCEP]
     D[Desenvolvedor] -->|flask init-db / criar-usuario| F
 ```
 
