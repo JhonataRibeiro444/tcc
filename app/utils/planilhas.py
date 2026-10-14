@@ -132,9 +132,12 @@ def ler_planilha(stream, nome_arquivo):
         texto = stream.read().decode("utf-8-sig")
         linhas_brutas = list(csv.reader(io.StringIO(texto)))
     elif extensao == "xlsx":
-        livro = load_workbook(stream, data_only=True, read_only=True)
-        planilha = livro.active
-        linhas_brutas = [list(linha) for linha in planilha.iter_rows(values_only=True)]
+        try:
+            livro = load_workbook(stream, data_only=True, read_only=True)
+            planilha = livro.active
+            linhas_brutas = [list(linha) for linha in planilha.iter_rows(values_only=True)]
+        except Exception as erro:  # openpyxl falha com varios tipos (zip, xml, chave)
+            raise ValueError("Nao foi possivel ler o arquivo .xlsx. Ele esta corrompido?") from erro
     else:
         raise ValueError("Formato de arquivo nao suportado. Envie um .xlsx ou .csv.")
 

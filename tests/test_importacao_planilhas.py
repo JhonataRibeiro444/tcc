@@ -162,3 +162,98 @@ def test_exportar_respeita_filtro_de_situacao(client_logado):
     resposta = client_logado.get("/clientes/exportar?formato=csv&situacao=ativos")
 
     assert "Maria Silva" not in resposta.get_data(as_text=True)
+
+
+def _enviar(client, conteudo, nome):
+    return client.post(
+        "/clientes/importar",
+        data={"arquivo": (io.BytesIO(conteudo), nome)},
+        content_type="multipart/form-data",
+        follow_redirects=True,
+    )
+
+
+def test_baixa_planilha_modelo(client_logado):
+    resposta = client_logado.get("/clientes/importar/modelo")
+
+    planilha = openpyxl.load_workbook(io.BytesIO(resposta.data)).active
+    assert [c.value for c in planilha[1]] == planilhas.COLUNAS
+
+
+def test_xlsx_corrompido_mostra_aviso_sem_erro_500(client_logado):
+    resposta = _enviar(client_logado, b"nao e um zip", "ruim.xlsx")
+
+    assert resposta.status_code == 200
+    assert "corrompido" in resposta.get_data(as_text=True)
+
+
+def test_csv_com_codificacao_invalida_mostra_aviso(client_logado):
+    resposta = _enviar(client_logado, b"\xff\xfe\xfa", "ruim.csv")
+
+    assert resposta.status_code == 200
+    assert Cliente.query.count() == 0
+
+
+def test_planilha_so_com_cabecalho_avisa_que_esta_vazia(client_logado):
+    resposta = _enviar(client_logado, (",".join(planilhas.COLUNAS) + "\n").encode(), "v.csv")
+
+    assert "A planilha nao tem nenhuma linha para importar." in resposta.get_data(as_text=True)
+
+
+def test_token_inexistente_volta_para_o_envio(client_logado):
+    token = "0" * 32
+    for metodo, url in [
+        ("get", f"/clientes/importar/{token}"),
+        ("get", f"/clientes/importar/{token}/erros"),
+        ("post", f"/clientes/importar/{token}/confirmar"),
+    ]:
+        resposta = getattr(client_logado, metodo)(url)
+        assert resposta.status_code == 302, url
+        assert resposta.headers["Location"] == "/clientes/importar", url
+
+
+def test_relatorio_de_erros_traz_a_linha_e_o_motivo(client_logado):
+    previa = client_logado.post(
+        "/clientes/importar",
+        data={"arquivo": (_construir_csv([_linha(documento="111.111.111-11")]), "c.csv")},
+        content_type="multipart/form-data",
+        follow_redirects=True,
+    )
+
+    resposta = client_logado.get(f"/clientes/importar/{_token_da_url(previa)}/erros")
+
+    texto = resposta.data.decode("utf-8-sig")
+    assert resposta.mimetype == "text/csv"
+    assert "CPF invalido." in texto
+
+
+def test_documento_cadastrado_entre_previa_e_confirmacao_nao_duplica(client_logado):
+    previa = client_logado.post(
+        "/clientes/importar",
+        data={"arquivo": (_construir_csv([_linha()]), "c.csv")},
+        content_type="multipart/form-data",
+        follow_redirects=True,
+    )
+    client_logado.post("/clientes/novo", data=dados_cliente(documento="529.982.247-25"))
+
+    client_logado.post(
+        f"/clientes/importar/{_token_da_url(previa)}/confirmar", follow_redirects=True
+    )
+
+    assert Cliente.query.count() == 1
+
+
+def test_confirmacao_so_vale_uma_vez(client_logado):
+    previa = client_logado.post(
+        "/clientes/importar",
+        data={"arquivo": (_construir_csv([_linha()]), "c.csv")},
+        content_type="multipart/form-data",
+        follow_redirects=True,
+    )
+    url = f"/clientes/importar/{_token_da_url(previa)}/confirmar"
+
+    client_logado.post(url)
+    segunda = client_logado.post(url)
+
+    assert segunda.headers["Location"] == "/clientes/importar"
+    assert Cliente.query.count() == 1
