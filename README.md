@@ -1,5 +1,7 @@
 # CRM - TCC Daniel e Jhonatan 
 
+[![testes](https://github.com/JhonataRibeiro444/tcc/actions/workflows/testes.yml/badge.svg)](https://github.com/JhonataRibeiro444/tcc/actions/workflows/testes.yml)
+
 Sistema de CRM (Customer Relationship Management) desenvolvido como Trabalho de
 Conclusao de Curso. Esta etapa contempla o nucleo cadastral do sistema:
 autenticacao de usuarios, gestao de clientes (pessoa fisica e juridica) e
@@ -122,12 +124,18 @@ A aplicacao fica disponivel em <http://127.0.0.1:5000>.
 ## Testes
 
 ```bash
-python -m pytest
+pip install -r requirements-dev.txt
+python -m pytest                      # suite rapida, com cobertura (minimo 90%)
+python -m playwright install chromium # uma vez, para os testes de navegador
+python -m pytest -m e2e --no-cov      # testes end-to-end com Playwright
 ```
 
-A suite cobre os validadores de documento, o fluxo de autenticacao, o CRUD de
-clientes e contatos (incluindo as respostas parciais usadas pelo HTMX) e a
-importacao/exportacao de planilhas.
+A suite cobre validadores, autenticacao, CLI, clientes, contatos, painel e
+importacao/exportacao de planilhas, com cobertura de 98% das linhas e branches.
+Os testes end-to-end exercitam no navegador o login, a busca, as mascaras, o
+painel de contatos e o fluxo completo de importacao. Tudo roda no GitHub
+Actions a cada push. Detalhes em
+[docs/engineering/testing-strategy.md](docs/engineering/testing-strategy.md).
 
 ## Interface
 

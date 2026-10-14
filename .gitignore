@@ -28,3 +28,4 @@ Thumbs.db
 .coverage.*
 htmlcov/
 coverage.xml
+test-results/
