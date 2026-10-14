@@ -15,6 +15,19 @@ Todo `pytest` mede a cobertura de linhas e branches de `app/` (`.coveragerc`) e 
 faltantes dos arquivos não totalmente cobertos. A suíte **falha abaixo do piso** definido em
 `fail_under = 90`. Em 2026-10-14 a cobertura medida era 98%. O piso só sobe, nunca desce.
 
+### Testes de navegador (E2E)
+
+```powershell
+python -m playwright install chromium   # uma vez por máquina
+python -m pytest -m e2e --no-cov
+python -m pytest -m e2e --no-cov --headed --slowmo 300   # para ver o navegador
+```
+
+Ficam em `tests/e2e/`, marcados com `e2e`, e não rodam no `pytest` padrão. A fixture `servidor`
+(`tests/e2e/conftest.py`) sobe a aplicação num servidor real em porta livre, com banco SQLite
+temporário, CSRF ligado e um usuário E2E; cada teste começa só com esse usuário. Use `--no-cov`:
+a meta de cobertura vale para a suíte rápida, não para os E2E.
+
 ## Hoje
 
 Suíte pytest em `tests/`. Cada teste recebe uma aplicação na
@@ -48,7 +61,6 @@ banco juntos, verificando o comportamento visível (status, HTML, registros grav
 
 ## Lacunas conhecidas
 
-- Sem testes no navegador (o JavaScript de máscaras e as trocas HTMX não são exercitados de verdade).
 - Sem testes de acessibilidade.
 
 A ampliação da suíte (cobertura, testes unitários e end-to-end com Playwright) está no
